@@ -1,5 +1,7 @@
-#!/usr/bin/ruby
-
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""
+=begin
 require 'cgi'
 require 'rubygems'
 require 'mysql'
@@ -63,7 +65,7 @@ begin
 rescue
   puts $!
 end
-
+=begin
 
 =begin CGI的环境变量举例
 "HTTP_HOST"=>"127.0.0.1"
@@ -92,3 +94,12 @@ end
 "REQUEST_URI"=>"/cgi-bin/test.rb"
 "SCRIPT_NAME"=>"/cgi-bin/test.rb"
 =end
+"""
+
+
+import sys
+print "Content-Type: text/html\n\n";
+print ( "<html><head><title>Error</title></head><body><h1>404 Not Found" )
+print (sys.argv)
+print ( "</h1></body></html>" )
+
