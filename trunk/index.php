@@ -6,6 +6,7 @@
 </head>
 <body>
 <p><h2>Listing Movies</h2></p>
+<p><h2>Listing Movies</h2></p>
 <p>
 <?php
 $db = mysql_connect('localhost', 'root', 'wickedsick77');
