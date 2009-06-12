@@ -1,0 +1,4 @@
+grep cgi -rIn /etc/apache2/
+ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+
+1.cp 
