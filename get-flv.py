@@ -97,16 +97,17 @@ end
 """
 
 
-import web
 
 import sys
+import cgi
 import cgitb
 cgitb.enable()
 
-print "Content-Type: text/html\n\n";
-print ( "<html><head><title>Error</title></head><body><h1>404 Not Found" )
+form = cgi.FieldStorage()
+print ("Content-Type: text/html\n\n");
+print ("<html><head><title>Error</title></head><body><h1>404 Not Found")
 print (sys.argv)
-print (web.header())
-print (web.cgi.items())
+print (form)
+#print (cgi.items())
 print ( "</h1></body></html>" )
 
