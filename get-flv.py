@@ -36,14 +36,14 @@ import sys
 import cgi
 import cgitb
 import os
+from config import *
 cgitb.enable()
 cgitb.enable(display=0, logdir="/tmp")
 
 
 # 将相对路径为rel_path的文件发给客户端
-document_root = "/data/videos/"
 def send_file(rel_path):
-    data = open(document_root + rel_path, "rb")
+    data = open(videos_root + rel_path, "rb")
     print (data.read())
 
 
