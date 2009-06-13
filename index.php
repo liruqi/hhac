@@ -6,7 +6,6 @@
 </head>
 <body>
 <p><h2>Listing Movies</h2></p>
-<p><h2>Listing Movies</h2></p>
 <p>
 <?php
 $db = mysql_connect('localhost', 'root', 'wickedsick77');
@@ -34,7 +33,8 @@ while($row = mysql_fetch_array($res, MYSQL_ASSOC))
 
     print("<tr>\n");
     print("<td>$id</td>\n");
-    print("<td><a href=/cgi-bin/get-flv?id=$id&amp;session=42783497293>$name</a></td>\n");
+#    print("<td><a href=/cgi-bin/get-flv?id=$id&amp;session=42783497293>$name</a></td>\n");
+    print("<td><a target=\"viewer\" href=/vod/play.php?id=$id>$name</a></td>\n");
     print("<td>$owner</td>\n");
     print("</tr>\n");
 }
