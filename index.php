@@ -33,12 +33,7 @@ while($row = mysql_fetch_array($res, MYSQL_ASSOC))
 
     print("<tr>\n");
     print("<td>$id</td>\n");
-<<<<<<< .mine
-    print("<td><a href=/cgi-bin/get-flv?id=$id>$title</a></td>\n");
-=======
-#    print("<td><a href=/cgi-bin/get-flv?id=$id&amp;session=42783497293>$name</a></td>\n");
-    print("<td><a target=\"viewer\" href=/vod/play.php?id=$id>$name</a></td>\n");
->>>>>>> .r11
+    print("<td><a target=\"viewer\" href=/hhac/play.php?id=$id>$title</a></td>\n");
     print("<td>$owner</td>\n");
     print("</tr>\n");
 }
