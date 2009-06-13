@@ -1,4 +1,12 @@
 grep cgi -rIn /etc/apache2/
 ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
 
-1.cp 
+mysql user: hhac /password: iamharmless
+
+1.copy cgi script to a common cgi path, e,g:
+cp get-flv.py /usr/lib/cgi-bin/
+
+2.copy php file to web server dir
+mkdir /var/www/hhac
+cp index.php /var/www/hhac
+
