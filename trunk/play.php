@@ -6,18 +6,18 @@
 		<div>
 <?php
 $id = $_GET["id"];
-echo "http://localhost/cgi-bin/get-flv?id=$id<br>";
+echo "http://192.168.0.116/cgi-bin/get-flv?id=$id<br>";
 ?>
 		</div>
-		<object type="application/x-shockwave-flash" data="vcastr3.swf" width="650" height="500" id="vcastr3">
-			<param name="movie" value="vcastr3.swf"/> 
+		<object type="application/x-shockwave-flash" data="player.swf" width="650" height="500" id="vcastr3">
+			<param name="movie" value="player.swf"/> 
 			<param name="allowFullScreen" value="true" />
 			<param name="FlashVars" value="xml=
 				<vcastr>
 					<channel>
 						<item>
 <?php
-echo "<source>http://localhost/cgi-bin/get-flv?id=$id</source>";
+echo "<source>http://192.168.0.116/cgi-bin/get-flv?id=$id</source>";
 ?>
 
 							<duration></duration>
