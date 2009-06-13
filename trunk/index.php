@@ -8,13 +8,13 @@
 <p><h2>Listing Movies</h2></p>
 <p>
 <?php
-$db = mysql_connect('localhost', 'root', 'wickedsick77');
+$db = mysql_connect('localhost', 'hhac', 'iamharmless');
 if(!$db) {
     die('Could not connect: ' . mysql_error());
 }
-$dbname = 'vod';
+$dbname = 'hhac';
 mysql_select_db($dbname, $db) or die("Cannot switch to $dbname");
-$query = 'select id, name, owner from flves';
+$query = 'select id, title, owner from videos';
 $res = mysql_query($query, $db) or die('SELECT error: ' . mysql_error());
 mysql_close($db);
 ?>
@@ -28,13 +28,17 @@ mysql_close($db);
 while($row = mysql_fetch_array($res, MYSQL_ASSOC))
 {
     $id = $row['id'];
-    $name = $row['name'];
+    $title = $row['title'];
     $owner = $row['owner'];
 
     print("<tr>\n");
     print("<td>$id</td>\n");
+<<<<<<< .mine
+    print("<td><a href=/cgi-bin/get-flv?id=$id>$title</a></td>\n");
+=======
 #    print("<td><a href=/cgi-bin/get-flv?id=$id&amp;session=42783497293>$name</a></td>\n");
     print("<td><a target=\"viewer\" href=/vod/play.php?id=$id>$name</a></td>\n");
+>>>>>>> .r11
     print("<td>$owner</td>\n");
     print("</tr>\n");
 }

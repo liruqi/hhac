@@ -97,17 +97,64 @@ end
 """
 
 
-
+import MySQLdb
 import sys
 import cgi
 import cgitb
+import os
 cgitb.enable()
+cgitb.enable(display=0, logdir="/tmp")
 
-form = cgi.FieldStorage()
-print ("Content-Type: text/html\n\n");
-print ("<html><head><title>Error</title></head><body><h1>404 Not Found")
-print (sys.argv)
-print (form)
-#print (cgi.items())
-print ( "</h1></body></html>" )
 
+document_root = "/data/videos/"
+def send_file(rel_path):
+    data = open(document_root + rel_path, "rb")
+    print (data.read())
+
+def lookup_path(id):
+    db = MySQLdb.connect('localhost', 'hhac', 'iamharmless', 'hhac')
+    reader = db.cursor()
+    num = reader.execute("SELECT path FROM videos WHERE id = " + str(id) + ";")
+    if num == 1:
+        path = reader.fetchone()
+        return path[0]
+    return None
+
+def check_session(s) :
+    return True
+
+try :
+#if __name__ == '__main__'
+    #print ("Content-Type: video/x-flv\n\n");
+    form = cgi.FieldStorage()
+    id = form.getvalue("id")
+    #print (os.environ)
+    #session = form.getvalue("session")
+    #if check_session(session):
+    if True:
+        try :
+            rel_path = lookup_path(id)
+            print "Content-Type: application/octet-stream\n";
+            send_file(rel_path)
+        except :
+            print ("Content-Type: text/html\n\n" + rel_path);
+            print ("<html><head><title>Error0</title></head><body><h1>403 Forbidden</h1></body></html>")
+    """else :
+        # 处理id无效的情况
+        print ("Content-Type: text/html\n\n");
+        print "HTTP/1.0 404 Not Found"
+        print "Server: physacco@gmail.com\n"  # 无效
+        print "Content-Type: text/html; charset=utf-8\n";
+        print "Connection: Close\n"
+        print "<html><head><title>Error1</title></head><body><h1>404 Not Found</h1></body></html>"
+    """
+
+except:
+    print ("Content-Type: text/html\n\n" + rel_path);
+    print ("<html><head><title>Error2</title></head><body>404 Not Found<br/>")
+    for k in os.environ:
+        print (k, os.environ[k])
+        print ("<br/>")
+    print (id)
+    #print (session)
+    print ( "</body></html>")
