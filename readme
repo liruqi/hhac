@@ -1,12 +1,17 @@
-grep cgi -rIn /etc/apache2/
-ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
-
-mysql user: hhac /password: iamharmless
+deploy schema:
 
 1.copy cgi script to a common cgi path, e,g:
 cp get-flv.py /usr/lib/cgi-bin/
+(grep cgi -rIn /etc/apache2/
+ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/)
 
 2.copy php file to web server dir
 mkdir /var/www/hhac
-cp index.php /var/www/hhac
+cp *.php /var/www/hhac
+cp *.swf /var/www/hhac
+
+3.create database user & database
+mysql -u root -p -e setup_db.sql
+
+4.add users & videos
 
