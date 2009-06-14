@@ -69,7 +69,7 @@ mysql_close($db);
         <vcastr>
           <channel>
             <item>
-              <source><?php echo "http://$ip/cgi-bin/get-flv?id=$id" ?></source>
+              <source><?php echo "http://$ip/hhac/cgi/get-flv?id=$id" ?></source>
               <duration></duration>
               <title></title>
             </item>
