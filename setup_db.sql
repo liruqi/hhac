@@ -30,7 +30,13 @@ CREATE TABLE IF NOT EXISTS comments(
     ctime TIMESTAMP NOT NULL,
     PRIMARY KEY (id)
 );
-
+CREATE TABLE IF NOT EXISTS sessions(
+    id INTEGER NOT NULL,
+    ip VARCHAR(255) NOT NULL,
+    userid INTEGER NOT NULL,
+    ctime TIMESTAMP NOT NULL,
+    PRIMARY KEY (id)
+);
 -- Create Mysql User.
 -- Error occurs when the very user exists.
 CREATE USER hhac@'localhost' IDENTIFIED BY 'iamharmless';
