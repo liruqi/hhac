@@ -36,7 +36,8 @@ import sys
 import cgi
 import cgitb
 import os
-from config import *
+
+videos_root = "/data/videos/"
 cgitb.enable()
 cgitb.enable(display=0, logdir="/tmp")
 

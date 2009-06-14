@@ -1,18 +1,24 @@
 deploy schema:
 
-1.copy cgi script to a common cgi path, e,g:
-cp get-flv.py /usr/lib/cgi-bin/
-(grep cgi -rIn /etc/apache2/
-ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/)
+1.copy php/swf/html files to web server dir
+    mkdir /var/www/hhac
+    cp -r www/* /var/www/hhac
 
-2.copy php file to web server dir
-mkdir /var/www/hhac
-cp www/* /var/www/hhac
+2. config apache
+    vi /etc/apache2/sites-available/default
+
+    ScriptAlias /hhac/cgi/ /var/www/hhac/cgi/
+	<Directory "/var/www/hhac/cgi/">
+		AllowOverride None
+		Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+		Order allow,deny
+		Allow from all
+	</Directory>
 
 3.create database user & database
-mysql -u root -p -e setup_db.sql
+    mysql -u root -p -e setup_db.sql
 
 4.add users & videos
-manipulate sql
-batch python script to add videos: addVideos.py
+    manipulate sql
+    batch python script to add videos: addVideos.py
 
