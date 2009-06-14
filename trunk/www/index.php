@@ -14,29 +14,37 @@ if(!$db) {
 }
 $dbname = 'hhac';
 mysql_select_db($dbname, $db) or die("Cannot switch to $dbname");
-$query = 'select id, title, owner from videos';
+$query = 'select * from videos';
 $res = mysql_query($query, $db) or die('SELECT error: ' . mysql_error());
-mysql_close($db);
 ?>
-<table border='1'>
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Owner</th>
-  </tr>
+<table border='1' width="600">
 <?php
+$line = 0;
 while($row = mysql_fetch_array($res, MYSQL_ASSOC))
 {
     $id = $row['id'];
     $title = $row['title'];
+    $tags = $row['tags'];
+    $description = $row['description'];
     $owner = $row['owner'];
 
-    print("<tr>\n");
-    print("<td>$id</td>\n");
-    print("<td><a target=\"viewer\" href=/hhac/play.php?id=$id>$title</a></td>\n");
-    print("<td>$owner</td>\n");
-    print("</tr>\n");
+  $query_user = "select * from users where id=$owner";
+  $res_user = mysql_query($query_user, $db);
+  $row_user = mysql_fetch_array($res_user, MYSQL_ASSOC);
+  $user_name = $row_user['name'];
+
+  $background = "#cceecc";
+  if($line % 2 ) {
+    $background = "#ccddcc";
+  }
+  print "<tr><td style=\"background:$background\">";
+  print "<a target=\"viewer\" href=\"/hhac/play.php?id=$id\" style=\"font-weight:bold\">$title</a> by <a>$user_name</a><br>";
+  print "Tags: $tags<br>";
+  print "Description: $description";
+  print "</td></tr>";
+  $line = $line + 1;
 }
+mysql_close($db);
 ?>
 </table>
 </p>
