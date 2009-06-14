@@ -7,11 +7,12 @@ ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/)
 
 2.copy php file to web server dir
 mkdir /var/www/hhac
-cp *.php /var/www/hhac
-cp *.swf /var/www/hhac
+cp www/* /var/www/hhac
 
 3.create database user & database
 mysql -u root -p -e setup_db.sql
 
 4.add users & videos
+manipulate sql
+batch python script to add videos: addVideos.py
 
