@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
 import getopt
 import os
@@ -17,7 +17,7 @@ def add_file(path):
         path = path[ len(videos_root) : ]
     info = path.split('/')
     title = string.join(info, '-')
-    tags = info[0]
+    tags = info[0]+'-'+info[1]
     description = title
     sql = "insert into videos(path, title, tags, description, owner) values('%s', '%s', '%s', '%s', %d)"%(path, title, tags, description, 1)
     cmd = "mysql -u hhac -piamharmless -D hhac -e \""+sql +"\";"
