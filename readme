@@ -1,5 +1,7 @@
 deploy schema:
 
+0.apache2, php5-cli, php5-mysql, mysql-server-5.1, libapache2-mod-php5, subversion require
+
 1.copy php/swf/html files to web server dir
     mkdir /var/www/hhac
     cp -r www/* /var/www/hhac
@@ -16,7 +18,7 @@ deploy schema:
 	</Directory>
 
 3.create database user & database
-    mysql -u root -p -e setup_db.sql
+    mysql -u root -p -B setup_db.sql
 
 4.add users & videos
     manipulate sql
