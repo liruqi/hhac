@@ -18,7 +18,7 @@ deploy schema:
 	</Directory>
 
 3.create database user & database
-    mysql -u root -p -B setup_db.sql
+    mysql -u root -p -B < setup_db.sql
 
 4.add users & videos
     manipulate sql
