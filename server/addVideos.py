@@ -4,20 +4,17 @@ import getopt
 import os
 import sys
 import string
-from config import *
 
 def __print_usage_info():
-    print("Usage: %s [path relative to videos_root]\n"%sys.argv[0])
+    print("Usage: %s [path]\n"%sys.argv[0])
     print("Options:")
     print("  -d: add all video files in a directory[but not recursive]")
 
 def add_file(path):
-    if path.find(videos_root) == 0:
-        assert os.path.isfile(path), path + " not valid path"
-        path = path[ len(videos_root) : ]
+    assert os.path.isfile(path), path + " not valid path"
     info = path.split('/')
     title = string.join(info, '-')
-    tags = info[0]+'-'+info[1]
+    tags = info[2]+'-'+info[3]
     description = title
     sql = "insert into videos(path, title, tags, description, owner) values('%s', '%s', '%s', '%s', %d)"%(path, title, tags, description, 1)
     cmd = "mysql -u hhac -piamharmless -D hhac -e \""+sql +"\";"
@@ -52,8 +49,6 @@ if __name__ == "__main__":
             __print_usage_info()
             sys.exit()
     path = args[0]
-    if path[0] != '/':
-        path = videos_root+path
     if directory :
         add_dir(path)
     else :
