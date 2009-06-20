@@ -11,7 +11,7 @@
 <body>
   <h2>HHAC Login</h2>
 
-  <form action="/cgi-bin/hhac-login" method="post">
+  <form action="/hhac/hhac-login" method="post">
     <p>
       <label>Username:<br />
         <input id="name" name="name" type="text" /> </label>
