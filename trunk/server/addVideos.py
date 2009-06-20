@@ -12,7 +12,7 @@ def __print_usage_info():
 
 def add_file(path):
     assert os.path.isfile(path), path + " not valid path"
-    info = path.split('/')
+    info = path.split('/')[1:]
     title = string.join(info, '-')
     tags = info[2]+'-'+info[3]
     description = title
@@ -23,6 +23,8 @@ def add_file(path):
 
 def add_dir(dir):
     assert os.path.isdir(dir), dir + " not valid directory"
+    if dir[-1] != '/':
+        dir = dir + '/'
     print ("add directory "+ dir)
     fd = os.popen("ls " + dir)
     files = fd.read().split()
