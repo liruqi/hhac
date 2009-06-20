@@ -3,11 +3,12 @@
 <head>
   <title>Movie Directory</title>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <script type="text/javascript" src="/hhac/prototype.js"></script>
 </head>
 <body>
-<p><h2>Listing Movies</h2></p>
-<p>
-<?php
+<p><h2>Listing Movies (PHP)</h2></p>
+<div id="div_mvlist">
+<?php  // SQL query
 $db = mysql_connect('localhost', 'hhac', 'iamharmless');
 if(!$db) {
     die('Could not connect: ' . mysql_error());
@@ -17,8 +18,9 @@ mysql_select_db($dbname, $db) or die("Cannot switch to $dbname");
 $query = 'select * from videos';
 $res = mysql_query($query, $db) or die('SELECT error: ' . mysql_error());
 ?>
-<table border='1' width="600">
-<?php
+
+<table id="mvlist" border='1' width="600">
+<?php  // renderring table `mvlist`
 $line = 0;
 while($row = mysql_fetch_array($res, MYSQL_ASSOC))
 {
@@ -47,6 +49,7 @@ while($row = mysql_fetch_array($res, MYSQL_ASSOC))
 mysql_close($db);
 ?>
 </table>
-</p>
+
+</div>
 </body>
 </html>

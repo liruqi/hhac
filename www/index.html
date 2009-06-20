@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Movie Directory</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <script type="text/javascript" src="/hhac/prototype.js"></script>
+
+<script type="text/javascript">
+load_mvlist = new Ajax.Updater("products", '/hhac/cgi/mvlist',
+  {
+    method: 'GET',
+    onSuccess: function(transport) {
+      var response = transport.responseText || "no response text";
+      the_div = $("mvlist");
+
+      movies = response.evalJSON();
+      movie_count = movies.size();
+
+      table=document.createElement("table");
+      table.setAttribute("id", "mvlist");
+      table.setAttribute("border", "1");
+      table.setAttribute("width", "600");
+
+      for(var i = 0; i < movie_count; i++)
+      {
+        umovie =  movies[i];
+        movie_id = umovie.id;
+        movie_title = umovie.title;
+        movie_tags = umovie.tags;
+        movie_description = umovie.description;
+        movie_user = umovie.user;
+
+        a=document.createElement("a");
+        a.setAttribute("target", "viewer");
+        a.setAttribute("href", "/hhac/play.php?id="+movie_id);
+        a.setAttribute("style", "font-weight:bold");
+        a.appendChild(document.createTextNode(movie_title));
+
+        info_user=" by "+movie_user;
+        info_tags="Tags: "+movie_tags;
+        info_description="Description: "+movie_description;
+
+        td=document.createElement("td");
+        background = i % 2 ? "#cceecc" : "#ccddcc";
+        td.setAttribute("style", "background:"+background);
+        td.appendChild(a);
+        td.appendChild(document.createTextNode(info_user));
+        td.appendChild(document.createElement("br"));
+        td.appendChild(document.createTextNode(info_tags));
+        td.appendChild(document.createElement("br"));
+        td.appendChild(document.createTextNode(info_description));
+
+        tr=document.createElement("tr");
+        tr.appendChild(td);
+        table.appendChild(tr);
+      }
+
+      $("div_mvlist").removeChild($("div_mvlist").firstChild);
+      $("div_mvlist").appendChild(table);
+    },
+    onFailure: function()
+    {
+      $("div_mvlist").firstChild.data = "Something went wrong...";
+    }
+  }
+); // end function `load_mvlist`
+</script>
+</head>
+
+<body>
+<p><h2>Listing Movies (Ajax)</h2></p>
+
+<div id="div_mvlist">
+loading movie list...
+</div>
+
+</body>
+</html>
