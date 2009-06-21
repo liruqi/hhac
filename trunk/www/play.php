@@ -57,6 +57,13 @@ mysql_close($db);
 </head>
 
 <body>
+
+    <div class="top">
+        <h1>Home of Harmless Amination & Comic</h1>
+    </div>
+
+    <hr/>
+
     <div id="play_and_info">
 
     <div id="movie_info">
