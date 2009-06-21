@@ -16,6 +16,7 @@ if($rowcnt == 0) {
   die("<h1>404 Not Found</h1>");
 }
 $movie = mysql_fetch_array($res, MYSQL_ASSOC);
+$id = $movie["id"];
 $title = $movie["title"];
 $tags = $movie["tags"];
 $description = $movie["description"];
@@ -34,6 +35,8 @@ mysql_close($db);
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <title>test</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <script type="text/javascript" src="/hhac/prototype.js"></script>
   <style type="text/css">
 #movie_info {
   position: absolute;
@@ -48,7 +51,7 @@ mysql_close($db);
   position: absolute;
   margin-top: 380px;
   width: 98%;
-  border: 2px solid #cccccc;
+  //border: 2px solid #cccccc;
 }
   </style>
 </head>
@@ -58,6 +61,7 @@ mysql_close($db);
 
     <div id="movie_info">
       <span style="font-weight:bold"><?php echo $title ?></span><br/>
+      <div id="movie-id" style="display:none"><?php echo $id ?></div>
       Owner: <?php echo $user_name ?><br/>
       Tags: <?php echo $tags ?><br/>
       Description: <?php echo $description ?><br/>
@@ -86,7 +90,89 @@ mysql_close($db);
     </div>
   </div>
 
+<script type="text/javascript">
+function load_comment()
+{
+  var movie_id = $("movie-id").firstChild.data;
+  request = new Ajax.Request('/hhac/cgi/comments',
+    {
+      method: 'GET',
+      parameters: { movie: movie_id },
+      onSuccess: function(transport) {
+        var response = transport.responseText;
+        //$("comment-list").firstChild.data = response;
+        //$("comment-list").removeChild($("comment-list").firstChild);
+
+        var comments = response.evalJSON();
+        var comment_cnt = comments.size();
+
+        if(comment_cnt > 0)
+        {
+          while(child = $("comment-list").firstChild)
+          {
+            $("comment-list").removeChild(child);
+          }
+
+          for(var i = 0; i < comment_cnt; i++)
+          {
+            var comment = comments[i];
+            var user = comment.user;
+            var content = comment.content;
+           
+            var tn = document.createTextNode(content+" by "+user);
+            var li = document.createElement("li");
+            li.appendChild(tn);
+            $("comment-list").appendChild(li);
+          }
+        }
+        else
+        {
+          $("comment-list").firstChild.data = "[没有评论]";
+        }
+      },
+      onFailure: function() {
+        alert("获取评论失败");
+      }
+    });
+}
+function submit_comment()
+{
+  var comment = document.getElementById('comment').value;
+  if(comment == "") {
+      alert("评论为空，无法发表!");
+      return;
+  }
+
+  var movie_id = $("movie-id").firstChild.data;
+  var comment = $("comment").value;
+
+  request = new Ajax.Request('/hhac/cgi/submit-comment', {
+    parameters: {
+      movie: movie_id,
+      comment: comment
+      },
+    onSuccess: function(transport) {
+      alert("评论发表成功！");
+      load_comment();
+    },
+    onFailure: function() { alert("评论发表失败！") }
+    });
+}
+
+// 在页面加载时读取评论
+load_comment();
+</script>
+
   <div id="comments">
     <p>Comments</p>
+    <p><div id="comment-list">
+      读取评论中...
+    </div></p>
+    <p><div style="">
+      <form id=“commitForm” name="commentForm" onsubmit="return false;" method="post">
+        <div><textarea id="comment" name="comment" style="width:480px;height:100px">我也来评论</textarea></div>
+        <div><button id="commit" name="commit" onclick="submit_comment()">发表</button></div>
+      </form>
+    </div></p>
   </div>
 </body></html>

@@ -1,0 +1,35 @@
+#!/usr/bin/ruby
+# vi:ft=ruby
+# 此脚本处理GET请求，返回一个JSON形式的comments列表
+
+require 'cgi'
+require 'rubygems'
+require 'active_support'
+require 'active_record'
+
+ActiveRecord::Base.establish_connection(
+    :adapter => 'mysql',
+    :database => 'hhac',
+    :username => 'hhac',
+    :password => 'iamharmless',
+    :host => 'localhost')
+
+class Comment < ActiveRecord::Base
+end
+
+cgi = CGI.new
+movie_id = cgi["movie"]
+
+list = []
+Comment.find(:all, :conditions => {:movie => movie_id}).each do |comment|
+  comment = {
+    "content" => comment.content,
+    "user" => comment.owner,
+    "movie" => comment.movie,
+  }
+  list << comment
+end
+
+#### Start writing response...
+puts "Content-Type: text/plain; charset=utf-8\n\n"
+puts list.to_json
