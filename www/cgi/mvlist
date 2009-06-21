@@ -3,7 +3,8 @@
 
 require 'rubygems'
 require 'active_record'
-require 'json'
+require 'active_support'
+#require 'json'
 
 ActiveRecord::Base.establish_connection(
     :adapter => 'mysql',

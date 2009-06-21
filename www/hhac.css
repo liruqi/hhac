@@ -1,0 +1,13 @@
+.even {
+    background-color: #ccddcc;
+}
+.odd {
+    background-color: #cceecc;
+}
+
+#div_mvlist a:link{ color: blue; }/*unvisited*/
+#div_mvlist a:visited{ color: green; }
+#div_mvlist a:hover {color:red; }
+#div_mvlist a:active { color: yellow; }
+
+

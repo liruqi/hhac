@@ -4,6 +4,7 @@
   <title>Movie Directory</title>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
   <script type="text/javascript" src="/hhac/prototype.js"></script>
+  <link type="text/css" href="hhac.css" rel="stylesheet"/> 
 
 <script type="text/javascript">
 load_mvlist = new Ajax.Request('/hhac/cgi/mvlist',
@@ -39,8 +40,12 @@ load_mvlist = new Ajax.Request('/hhac/cgi/mvlist',
         info_description = "Description: "+movie_description;
 
         td = document.createElement("td");
-        background = i % 2 ? "#cceecc" : "#ccddcc";
-        td.setAttribute("style", "background:"+background);
+        
+        //background = i % 2 ? "#cceecc" : "#ccddcc";
+        cls = ['even','odd'];
+        td.setAttribute("class", cls[i%2]);
+        
+        //td.setAttribute("style", "background:"+background);
         td.appendChild(a);
         td.appendChild(document.createTextNode(info_user));
         td.appendChild(document.createElement("br"));
