@@ -1,17 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>HHAC Login</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+</head>
+<body>
 <?php
 require("core.php");
 $usr_row = authenticate();
 if(!$usr_row) 
 {
-   //echo "authenticate fail.";
-    exit();
+  echo "authenticate fail.<br />";
+  echo "5秒后重定向到登录页面<br >";
+  echo "<script type='text/javascript'>setTimeout(\"self.location='/hhac/login.php'\", 5000)</script>";
 }
-$session_id = mk_session_id();
-session_start();
-setcookie("_session_id", $session_id);
-var_dump($usr_row);
-echo "Login Success!<br>";
-echo $session_id;
+else
+{
+  $session_id = mk_session_id();
+  session_start();
+  setcookie("_session_id", $session_id);
+  var_dump($usr_row);
+  echo "Login Success!<br >";
+  echo "session_id: $session_id<br />";
+  echo "5秒后重定向到视频列表<br>";
+  echo "<script type='text/javascript'>setTimeout(\"self.location='/hhac/'\", 5000)</script>";
+}
 
 
 /*
@@ -26,3 +39,6 @@ echo $session_id;
 */
 
 ?>
+
+</body>
+</html>

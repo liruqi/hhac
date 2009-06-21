@@ -22,7 +22,6 @@ function authenticate()
             return $usr_row;
         }
         header("HTTP/1.1 403 Forbidden");
-        echo "Login failed";
         return false;
     }
     else 

@@ -1,0 +1,34 @@
+#!/usr/bin/ruby
+# vi:ft=ruby
+# 此脚本处理POST请求，接受用户发表的评论，并存入数据库
+
+require 'cgi'
+require 'rubygems'
+require 'active_record'
+
+ActiveRecord::Base.establish_connection(
+    :adapter => 'mysql',
+    :database => 'hhac',
+    :username => 'hhac',
+    :password => 'iamharmless',
+    :host => 'localhost')
+
+class Comment < ActiveRecord::Base
+end
+
+cgi = CGI.new
+user = ENV["REMOTE_ADDR"]
+movie = cgi["movie"]
+content = cgi["comment"]
+
+Comment.create(
+  "owner" => user,
+  "movie" => movie,
+  "content" => content
+)
+
+# CGI response
+puts "Content-Type: text/plain\n\n"
+#puts user
+#puts movie
+#puts content
