@@ -6,17 +6,15 @@
   <script type="text/javascript" src="/hhac/prototype.js"></script>
 
 <script type="text/javascript">
-load_mvlist = new Ajax.Updater("products", '/hhac/cgi/mvlist',
+load_mvlist = new Ajax.Request('/hhac/cgi/mvlist',
   {
     method: 'GET',
     onSuccess: function(transport) {
-      var response = transport.responseText || "no response text";
-      the_div = $("mvlist");
-
+      var response = transport.responseText;
       movies = response.evalJSON();
       movie_count = movies.size();
 
-      table=document.createElement("table");
+      table = document.createElement("table");
       table.setAttribute("id", "mvlist");
       table.setAttribute("border", "1");
       table.setAttribute("width", "600");
@@ -30,17 +28,17 @@ load_mvlist = new Ajax.Updater("products", '/hhac/cgi/mvlist',
         movie_description = umovie.description;
         movie_user = umovie.user;
 
-        a=document.createElement("a");
+        a = document.createElement("a");
         a.setAttribute("target", "viewer");
         a.setAttribute("href", "/hhac/play.php?id="+movie_id);
         a.setAttribute("style", "font-weight:bold");
         a.appendChild(document.createTextNode(movie_title));
 
-        info_user=" by "+movie_user;
-        info_tags="Tags: "+movie_tags;
-        info_description="Description: "+movie_description;
+        info_user = " by "+movie_user;
+        info_tags = "Tags: "+movie_tags;
+        info_description = "Description: "+movie_description;
 
-        td=document.createElement("td");
+        td = document.createElement("td");
         background = i % 2 ? "#cceecc" : "#ccddcc";
         td.setAttribute("style", "background:"+background);
         td.appendChild(a);
@@ -50,7 +48,7 @@ load_mvlist = new Ajax.Updater("products", '/hhac/cgi/mvlist',
         td.appendChild(document.createElement("br"));
         td.appendChild(document.createTextNode(info_description));
 
-        tr=document.createElement("tr");
+        tr = document.createElement("tr");
         tr.appendChild(td);
         table.appendChild(tr);
       }
