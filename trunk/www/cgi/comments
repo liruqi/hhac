@@ -17,14 +17,18 @@ ActiveRecord::Base.establish_connection(
 class Comment < ActiveRecord::Base
 end
 
+class User < ActiveRecord::Base
+end
+
 cgi = CGI.new
 movie_id = cgi["movie"]
 
 list = []
 Comment.find(:all, :conditions => {:movie => movie_id}).each do |comment|
+  user = User.find(comment.owner)
   comment = {
     "content" => comment.content,
-    "user" => comment.owner,
+    "user" => user.name,
     "movie" => comment.movie,
   }
   list << comment

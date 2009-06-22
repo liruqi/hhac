@@ -1,4 +1,92 @@
 ﻿<?php
+
+$user = "guest";
+
+# get user_id & user from cookie
+# return $user on success, or "guest" if error occurs
+function get_user()
+{
+  global $user;
+
+  try
+  {
+    $session_id = $_COOKIE["_session_id"];
+    //echo "_session_id: $session_id<br/>";
+ 
+    $db_host = "localhost";
+    $db_name = "hhac";
+    $db_user = "hhac";
+    $db_pass = "iamharmless";
+  
+    // establish connection
+    $db_con = mysql_connect($db_host, $db_user, $db_pass);
+    if($db_con == FALSE)
+      throw new Exception("Cannot connect to database.");
+ 
+    // switch to $db_name
+    $db_selected = mysql_select_db($db_name, $db_con);
+    if($db_selected == FALSE)
+      throw new Exception("Cannot switch to $db_name.");
+  
+    // send a SELECT query
+    $sessid = mysql_real_escape_string($session_id);
+    $sql = "SELECT user_id, address FROM sessions WHERE sessid='$sessid'";
+    $res = mysql_query($sql, $db_con);
+    if($res == FALSE)
+      throw new Exception("SQL query failed.");
+ 
+    // process the very query result
+    $row = mysql_fetch_array($res, MYSQL_ASSOC);
+ 
+    // now, give a predication
+    if($row == FALSE)  // cannot fetch an array
+    {
+      mysql_close($db_con);
+      $user = "guest";
+      $message = "You are visiting HHAC as a guest.<br/>" .
+        "<a href='/hhac/login.php'>Login</a><br>";
+      echo $message;
+      return $user;
+    }
+    else
+    {
+      $user_id = $row["user_id"];
+      $address = $row["address"];
+    }
+ 
+    //echo "Got user_id: $user_id<br/>";
+ 
+    // get user name, another SELECT query
+    $sql = "SELECT name FROM users WHERE id='$user_id'";
+    $res = mysql_query($sql, $db_con);
+    if($res == FALSE)
+      throw new Exception("SQL query failed.");
+ 
+    // process the very query result
+    $row = mysql_fetch_array($res, MYSQL_ASSOC);
+ 
+    // now, give a predication
+    if($row == FALSE)  // cannot fetch an array
+      $user = "guest";
+    else
+      $user = $row["name"];
+ 
+    $message = "Welcome to HHAC, $user!<br/>" .
+      "<a href='/hhac/logout.php'>Logout</a><br>";
+    echo $message;
+
+    mysql_close($db_con);
+    return $user;
+  }
+  catch(Exception $e)
+  {
+    $message = "Cannot get user information.<br/>" .
+      "Reason: " . $e->getMessage();
+    echo $message;
+  }
+}// end of function get_user();
+
+
 $ip = $_SERVER["SERVER_NAME"];
 $id = $_GET["id"];
 
@@ -63,6 +151,10 @@ mysql_close($db);
     </div>
 
     <hr/>
+
+    <div id="user_info">
+      <?php get_user(); ?>
+    </div>
 
     <div id="play_and_info">
 
@@ -175,11 +267,17 @@ load_comment();
     <p><div id="comment-list">
       读取评论中...
     </div></p>
-    <p><div style="">
-      <form id=“commitForm” name="commentForm" onsubmit="return false;" method="post">
+    <p><div id="newComment" style="">
+    <?php
+    if($user == "guest")
+      echo "登录后发表评论 <a href=\"/hhac/login.php\">Login</a>";
+    else {
+      echo '<form id=“commitForm” name="commentForm" onsubmit="return false;" method="post">
         <div><textarea id="comment" name="comment" style="width:480px;height:100px">我也来评论</textarea></div>
         <div><button id="commit" name="commit" onclick="submit_comment()">发表</button></div>
-      </form>
+      </form>';
+    }
+    ?>
     </div></p>
   </div>
 </body></html>

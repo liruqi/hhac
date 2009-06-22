@@ -1,0 +1,31 @@
+#!/usr/bin/ruby
+# vi:ft=ruby
+
+require 'cgi'
+require 'rubygems'
+require 'active_support'
+require 'active_record'
+
+
+ActiveRecord::Base.establish_connection(
+    :adapter => 'mysql',
+    :database => 'hhac',
+    :username => 'hhac',
+    :password => 'iamharmless',
+    :host => 'localhost')
+
+class User < ActiveRecord::Base
+end
+
+cgi = CGI.new
+if cgi["Function"] == "create"
+  name = cgi["Name"]
+  password = cgi["Pass"]
+  email= cgi["Email"]
+
+  user = User.create(:name=>name, :password=>password, :email=>email)
+
+  cgi.out("text/plain") {
+    user.to_json
+  }
+end
