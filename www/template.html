@@ -4,8 +4,7 @@
   <title>Movie Directory</title>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
   <script type="text/javascript" src="/hhac/prototype.js"></script>
-  <link type="text/css" href="hhac.css" rel="stylesheet"/> 
-
+  <link type="text/css" href="hhac.css" rel="stylesheet"/>
 <script type="text/javascript">
 load_mvlist = new Ajax.Request('/hhac/cgi/movies',
   {
@@ -18,7 +17,7 @@ load_mvlist = new Ajax.Request('/hhac/cgi/movies',
       table = document.createElement("table");
       table.setAttribute("id", "mvlist");
       table.setAttribute("border", "1");
-      table.setAttribute("width", "600");
+      table.setAttribute("width", "100%");
 
       for(var i = 0; i < movie_count; i++)
       {
@@ -68,32 +67,130 @@ load_mvlist = new Ajax.Request('/hhac/cgi/movies',
   }
 ); // end function `load_vlist`
 </script>
+
+  <style type="text/css">
+/*
+page
+  header
+  content
+    nav
+    main
+      left
+      right
+  footer
+*/
+#page {
+background: #eeeeee none repeat scroll 0 0;
+margin: 0 auto;
+padding: 0;
+width: 960px;
+}
+#header {
+position: relative;
+background-color: #cccccc;
+margin: 0;
+padding: 0;
+text-align: center;
+}
+#content {
+position: relative;
+//margin: 0 auto 10px;
+padding: 0;
+width: 100%;
+}
+#nav {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+background-color: #bbbbff;
+}
+#nav ul {
+margin: 0;
+padding: 0;
+width: 100%;
+}
+#nav li {
+font-weight: bold;
+display: inline;
+float: left;
+line-height: 2em;
+list-style-image: none;
+list-style-position: outside;
+list-style-type: none;
+margin: 0;
+padding: 0 10px;
+}
+#nav li :hover {
+position: relative;
+background-color: #66bb66;
+}
+#main {
+position: relative;
+background-color: #ffffcc;
+}
+#left {
+display: inline;
+float: left;
+margin-top: 50px;
+overflow: hidden;
+width: 55%;
+//background-color: #cceecc;
+}
+#right {
+display: inline;
+float: right;
+margin-top: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+width: 44%;
+background-color: #ccddcc;
+}
+#footer {
+position: relative;
+left: 0;
+top: 20px;
+padding: 10px;
+background-color: #cccccc;
+text-align: left;
+clear: both;
+}
+  </style>
 </head>
 
 <body>
+  <div id="page">
+    <div id="header">
+      <h1>Home of Harmless Amination & Comic</h1>
+    </div>
 
-<div id="header" class="top">
-  <h1>Home of Harmless Amination & Comic</h1>
-</div>
+    <div id="content">
+      <div id="nav">
+        <ul>
+          <li><a href="/hhac/login.php">Login</a></li>
+          <li><a href="/hhac/register.php">Register</a></li>
+        </ul>
+      </div>
+      <div id="main">
+        <div id="left">
+          <p><span style="font-weight:bold">Available Movie List</span></p>
+          <div id="div_mvlist">
+            Loading movie list (Ajax)...
+          </div>
+        </div>
+        <div id="right">
+            <p>This is right part of div `main`</p>
+        </div>
+      </div>
+    </div>
 
-<div id="content">
-  <div id="nav">
-    <ul>
-      <li><a href="/hhac/login.php">Login</a></li>
-      <li><a href="/hhac/register.php">Register</a></li>
-    </ul>
+    <div id="footer">
+            <p>This is footer</p>
+      <!--
+      <img src="/hhac/fox1.jpg" width="48%"/>
+      <img src="/hhac/fox2.jpg" width="48%"/>
+      -->
+    </div>
   </div>
-
-  <p><h2>Listing Movies (Ajax)</h2></p>
-
-  <div id="div_mvlist">
-    loading movie list...
-  </div>
-
-</div>
-
-<div id="footer">
-</div>
-
 </body>
 </html>

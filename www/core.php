@@ -14,7 +14,6 @@ function authenticate()
         mysql_select_db("hhac", $db);
 
         $sql = "SELECT * FROM users WHERE name='$name' and password='$pass';";
-        //echo "$sql<br>";
         $res = mysql_query($sql, $db);
         if($res && $usr_row = mysql_fetch_array($res, MYSQL_ASSOC))
         {
@@ -38,7 +37,6 @@ function mk_session_id()
     $date = date("Y-m-d H:I:s");
     $remote_ip = $_SERVER["REMOTE_ADDR"];
     $seed = $user . $date . $remote_ip;
-    //echo ($seed);
     return md5($seed);
 }
 

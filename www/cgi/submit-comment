@@ -4,6 +4,7 @@
 
 require 'cgi'
 require 'rubygems'
+require 'active_support'
 require 'active_record'
 
 ActiveRecord::Base.establish_connection(
@@ -16,19 +17,26 @@ ActiveRecord::Base.establish_connection(
 class Comment < ActiveRecord::Base
 end
 
+class Session < ActiveRecord::Base
+end
+
 cgi = CGI.new
-user = ENV["REMOTE_ADDR"]
+sessid = cgi.cookies["_session_id"]
 movie = cgi["movie"]
 content = cgi["comment"]
 
-Comment.create(
-  "owner" => user,
+session = Session.find :first, :conditions => {:sessid => sessid}
+user_id = session ? session.user_id : 0
+
+# CGI response
+puts "Content-Type: text/plain\n\n"
+
+exit unless user_id
+
+comment = Comment.create(
+  "owner" => user_id,
   "movie" => movie,
   "content" => content
 )
 
-# CGI response
-puts "Content-Type: text/plain\n\n"
-#puts user
-#puts movie
-#puts content
+puts comment.to_json
