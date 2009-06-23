@@ -36,15 +36,36 @@ import sys
 import cgi
 import cgitb
 import os
+from FlvReader import *
 
 cgitb.enable()
 cgitb.enable(display=0, logdir="/tmp")
 
 
 # 将相对路径为rel_path的文件发给客户端
-def send_file(path):
-    data = open(path, "rb")
-    print (data.read())
+def send_file(flv, start):
+
+    assert os.path.isfile(flv), flv+" not a file path"
+
+    if start == 0:
+        data = open(flv, "rb")
+        print (data.read())
+        return
+    flvreader = FlvReader(flv)
+    sdtag = flvreader.GetTag()
+    ofile = sys.stdout
+    ofile.write(flvreader.FLVHeader)
+
+    while True:
+        tag = flvreader.GetTag()
+        if not tag:
+            break
+        if (tag.Timestamp + (tag.TimestampExtended << 24) ) >= start:
+            ofile.write(tag.GetRawData())
+            pts = pack_int(sdtag.GetSize())
+            ofile.write(pts)
+
+    #ofile.close()
 
 
 # 在数据库中根据id查询FLV文件的相对路径
@@ -57,19 +78,19 @@ def lookup_path(id):
         return path[0]
     return None
 
-try :
-#if __name__ == '__main__'
+#try :
+if __name__ == '__main__':
+    #send_file('/home/liruqi/china_net_ad.flv', 100000)
+    #sys.exit()
+    #print (os.environ["REQUEST_URI"])
     form = cgi.FieldStorage()
-    id = form.getvalue("id")
-    #print (os.environ)
+    id = form["id"].value
+    start = int(form["start"].value)
+
     if id:
-        try :
-            rel_path = lookup_path(id)
-            print "Content-Type: application/octet-stream\n";
-            send_file(rel_path)
-        except :
-            print ("Content-Type: text/html\n\n" + rel_path);
-            print ("<html><head><title>Error0</title></head><body><h1>403 Forbidden</h1></body></html>")
+        rel_path = lookup_path(id)
+        print "Content-Type: application/octet-stream\n";
+        send_file(rel_path, start)
     else :
         # 处理id无效的情况
         print ("Content-Type: text/html\n\n");
@@ -78,14 +99,16 @@ try :
         print "Content-Type: text/html; charset=utf-8\n";
         print "Connection: Close\n"
         print "<html><head><title>Error1</title></head><body><h1>404 Not Found</h1></body></html>"
-
+        print (form, id, start)
+'''
 except:
-    print ("Content-Type: text/html\n\n" + rel_path);
+    print ("Content-Type: text/html\n\n");
     print ("<html><head><title>Error2</title></head><body>404 Not Found<br/>")
     for k in os.environ:
         print (k, os.environ[k])
         print ("<br/>")
     print (id)
+    print (form, id, start)
     #print (session)
     print ( "</body></html>")
-
+'''
