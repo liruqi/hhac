@@ -85,7 +85,10 @@ if __name__ == '__main__':
     #print (os.environ["REQUEST_URI"])
     form = cgi.FieldStorage()
     id = form["id"].value
-    start = int(form["start"].value)
+    try:
+        start = int(form["start"].value)
+    except:
+        start = 0
 
     if id:
         rel_path = lookup_path(id)
