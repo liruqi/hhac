@@ -1,9 +1,11 @@
 #!/usr/bin/env python
-
+import MySQLdb
 import getopt
 import os
 import sys
 import string
+
+writer = None
 
 def __print_usage_info():
     print("Usage: %s [path]\n" % sys.argv[0])
@@ -12,15 +14,19 @@ def __print_usage_info():
 
 def add_file(path):
     assert os.path.isfile(path), path + " not valid path"
+    if path[0]!='/': #for windows
+        path = path.replace('\\', '/')
+        
     info = path.split('/')[1:]
     filename = info[-1]
     title = filename.split(".")[0]
     tags = title
     description = title
     sql = "insert into videos(path, title, tags, description, owner) values('%s', '%s', '%s', '%s', %d)"%(path, title, tags, description, 1)
-    cmd = "mysql -u hhac -piamharmless -D hhac -e \""+sql +"\";"
-    print (cmd)
-    os.system(cmd)
+    #cmd = "mysql -u hhac -piamharmless -D hhac -e \""+sql +"\";"
+    #print (cmd)
+    #os.system(cmd)
+    writer.execute(sql)
 
 def add_dir(dir):
     assert os.path.isdir(dir), dir + " not valid directory"
@@ -49,7 +55,9 @@ if __name__ == "__main__":
         sys.exit(1)
 
     directory = False
-
+    db = MySQLdb.connect('localhost', 'hhac', 'iamharmless', 'hhac')
+    writer = db.cursor()
+    
     for o,a in opts:
         if o == "-d":
             directory = True
